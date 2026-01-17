@@ -1,40 +1,87 @@
 /*
  * YouTube Zen - Content Script
  * Handles dynamic content hiding for YouTube's SPA architecture
+ * with user-configurable settings
  */
 
 (function() {
   'use strict';
 
-  // Selectors for elements to hide (backup for CSS)
-  const SELECTORS_TO_HIDE = [
-    // Shorts
-    'ytd-reel-shelf-renderer',
-    'ytd-rich-shelf-renderer[is-shorts]',
-    'ytm-reel-shelf-renderer',
-    'ytm-shorts-lockup-view-model',
-    'a[href^="/shorts/"]',
+  // Browser API compatibility (Chrome/Safari)
+  const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
-    // Recommendations
-    'ytd-watch-next-secondary-results-renderer',
-    '#secondary #secondary-inner',
-    'ytm-watch-next-secondary-results-renderer',
+  // Default settings - all enabled by default
+  const DEFAULT_SETTINGS = {
+    shorts: true,
+    recommendations: true,
+    comments: true,
+    homepage: true,
+    ads: true
+  };
 
-    // Comments
-    'ytd-comments',
-    '#comments',
-    'ytm-comment-section-renderer',
+  // Current settings cache
+  let currentSettings = { ...DEFAULT_SETTINGS };
 
-    // Homepage feed (only on home page)
-    // Handled separately based on URL
+  // CSS class prefix for body
+  const CLASS_PREFIX = 'yt-zen-hide-';
+
+  // Selectors organized by category
+  const SELECTORS = {
+    shorts: [
+      'ytd-reel-shelf-renderer',
+      'ytd-rich-shelf-renderer[is-shorts]',
+      'ytm-reel-shelf-renderer',
+      'ytm-shorts-lockup-view-model',
+    ],
+    recommendations: [
+      'ytd-watch-next-secondary-results-renderer',
+      '#secondary #secondary-inner',
+      'ytm-watch-next-secondary-results-renderer',
+    ],
+    comments: [
+      'ytd-comments',
+      '#comments',
+      'ytm-comment-section-renderer',
+    ],
+    homepage: [], // Handled via CSS only due to complexity
+    ads: [] // Handled via CSS only
+  };
+
+  // Shorts link selectors (need special handling to hide parent)
+  const SHORTS_LINK_SELECTOR = 'a[href^="/shorts/"]';
+  const VIDEO_RENDERER_PARENTS = [
+    'ytd-grid-video-renderer',
+    'ytd-video-renderer',
+    'ytd-compact-video-renderer',
+    'ytd-rich-item-renderer',
+    'ytm-compact-video-renderer',
+    'ytm-video-with-context-renderer'
   ];
 
-  // Homepage-specific selectors
-  const HOMEPAGE_SELECTORS = [
-    'ytd-browse[page-subtype="home"] ytd-rich-grid-renderer',
-    'ytd-browse[page-subtype="home"] ytd-rich-item-renderer',
-    'ytm-browse[page-subtype="home"] ytm-rich-grid-renderer',
-  ];
+  // Load settings from storage
+  async function loadSettings() {
+    try {
+      const result = await browserAPI.storage.local.get('zenSettings');
+      return result.zenSettings || DEFAULT_SETTINGS;
+    } catch (error) {
+      console.error('YouTube Zen: Error loading settings:', error);
+      return DEFAULT_SETTINGS;
+    }
+  }
+
+  // Apply CSS classes to body based on settings
+  function applySettingsClasses(settings) {
+    const body = document.body || document.documentElement;
+
+    Object.keys(settings).forEach(key => {
+      const className = CLASS_PREFIX + key;
+      if (settings[key]) {
+        body.classList.add(className);
+      } else {
+        body.classList.remove(className);
+      }
+    });
+  }
 
   // Hide an element
   function hideElement(el) {
@@ -43,46 +90,61 @@
     }
   }
 
+  // Show an element (remove inline hide)
+  function showElement(el) {
+    if (el && el.style.display === 'none') {
+      el.style.removeProperty('display');
+    }
+  }
+
   // Check if we're on the homepage
   function isHomePage() {
     const path = window.location.pathname;
-    return path === '/' || path === '/feed/subscriptions' === false && path.startsWith('/feed/');
+    return path === '/' || (path.startsWith('/feed/') && path !== '/feed/subscriptions');
   }
 
-  // Process and hide matching elements
+  // Process and hide matching elements based on current settings
   function hideMatchingElements() {
-    // Hide general elements
-    SELECTORS_TO_HIDE.forEach(selector => {
-      document.querySelectorAll(selector).forEach(hideElement);
-    });
+    // Process each category
+    Object.keys(SELECTORS).forEach(category => {
+      if (!currentSettings[category]) return;
 
-    // Hide homepage-specific elements only on homepage
-    if (isHomePage()) {
-      HOMEPAGE_SELECTORS.forEach(selector => {
+      SELECTORS[category].forEach(selector => {
         document.querySelectorAll(selector).forEach(hideElement);
       });
-    }
-
-    // Hide Shorts links in video grids
-    document.querySelectorAll('a[href^="/shorts/"]').forEach(el => {
-      // Find parent video renderer and hide it
-      const videoRenderer = el.closest(
-        'ytd-grid-video-renderer, ytd-video-renderer, ytd-compact-video-renderer, ' +
-        'ytd-rich-item-renderer, ytm-compact-video-renderer, ytm-video-with-context-renderer'
-      );
-      if (videoRenderer) {
-        hideElement(videoRenderer);
-      }
     });
+
+    // Special handling for Shorts links (hide parent video renderers)
+    if (currentSettings.shorts) {
+      document.querySelectorAll(SHORTS_LINK_SELECTOR).forEach(el => {
+        const videoRenderer = el.closest(VIDEO_RENDERER_PARENTS.join(', '));
+        if (videoRenderer) {
+          hideElement(videoRenderer);
+        }
+      });
+    }
   }
 
   // Expand video player width when sidebar is hidden
   function expandVideoPlayer() {
+    if (!currentSettings.recommendations) return;
+
     const watchFlexy = document.querySelector('ytd-watch-flexy');
     if (watchFlexy) {
       const primary = watchFlexy.querySelector('#primary');
       if (primary) {
         primary.style.setProperty('max-width', '100%', 'important');
+      }
+    }
+  }
+
+  // Reset video player width
+  function resetVideoPlayer() {
+    const watchFlexy = document.querySelector('ytd-watch-flexy');
+    if (watchFlexy) {
+      const primary = watchFlexy.querySelector('#primary');
+      if (primary) {
+        primary.style.removeProperty('max-width');
       }
     }
   }
@@ -100,7 +162,9 @@
 
     if (shouldProcess) {
       hideMatchingElements();
-      expandVideoPlayer();
+      if (currentSettings.recommendations) {
+        expandVideoPlayer();
+      }
     }
   }
 
@@ -118,20 +182,17 @@
 
   // Handle YouTube SPA navigation
   function handleNavigation() {
-    // Run hiding on navigation
     hideMatchingElements();
-    expandVideoPlayer();
+    if (currentSettings.recommendations) {
+      expandVideoPlayer();
+    }
   }
 
   // Listen for YouTube's SPA navigation events
   function setupNavigationListener() {
-    // YouTube uses yt-navigate-finish for SPA navigation
     window.addEventListener('yt-navigate-finish', handleNavigation);
-
-    // Fallback: listen for popstate
     window.addEventListener('popstate', handleNavigation);
 
-    // Intercept pushState and replaceState
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
@@ -146,9 +207,36 @@
     };
   }
 
+  // Listen for settings changes from popup
+  function setupStorageListener() {
+    browserAPI.storage.onChanged.addListener((changes, areaName) => {
+      if (areaName === 'local' && changes.zenSettings) {
+        const newSettings = changes.zenSettings.newValue || DEFAULT_SETTINGS;
+        currentSettings = newSettings;
+        applySettingsClasses(newSettings);
+
+        // Handle video player expansion
+        if (newSettings.recommendations) {
+          expandVideoPlayer();
+        } else {
+          resetVideoPlayer();
+        }
+
+        // Re-run hiding with new settings
+        hideMatchingElements();
+      }
+    });
+  }
+
   // Initialize
-  function init() {
-    // Initial hide
+  async function init() {
+    // Load settings
+    currentSettings = await loadSettings();
+
+    // Apply CSS classes for CSS-based hiding
+    applySettingsClasses(currentSettings);
+
+    // Initial hide with JS backup
     hideMatchingElements();
 
     // Set up observer for dynamic content
@@ -157,21 +245,29 @@
     // Set up navigation listener
     setupNavigationListener();
 
+    // Listen for settings changes
+    setupStorageListener();
+
     // Run again after DOM is fully loaded
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
+        applySettingsClasses(currentSettings);
         hideMatchingElements();
-        expandVideoPlayer();
+        if (currentSettings.recommendations) {
+          expandVideoPlayer();
+        }
       });
     }
 
-    // Run again after page is fully loaded (including images, etc.)
+    // Run again after page is fully loaded
     window.addEventListener('load', () => {
       hideMatchingElements();
-      expandVideoPlayer();
+      if (currentSettings.recommendations) {
+        expandVideoPlayer();
+      }
     });
   }
 
-  // Start
+  // Start initialization
   init();
 })();
