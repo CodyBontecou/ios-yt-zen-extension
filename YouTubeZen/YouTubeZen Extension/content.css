@@ -1,0 +1,177 @@
+/*
+ * YouTube Zen - Content Styles
+ * Hides distracting elements from YouTube
+ */
+
+/* ============================================
+   SHORTS - Hide all Shorts content
+   ============================================ */
+
+/* Desktop: Shorts shelf on homepage and search */
+ytd-reel-shelf-renderer,
+ytd-rich-shelf-renderer[is-shorts],
+ytd-reel-video-renderer {
+  display: none !important;
+}
+
+/* Desktop: Shorts tab in navigation */
+ytd-guide-entry-renderer a[title="Shorts"],
+ytd-mini-guide-entry-renderer a[title="Shorts"],
+tp-yt-paper-item[role="tab"] a[href="/shorts"] {
+  display: none !important;
+}
+
+/* Desktop: Shorts links in video grid */
+a[href^="/shorts/"],
+ytd-grid-video-renderer:has(a[href^="/shorts/"]),
+ytd-video-renderer:has(a[href^="/shorts/"]),
+ytd-compact-video-renderer:has(a[href^="/shorts/"]) {
+  display: none !important;
+}
+
+/* Mobile: Shorts shelf */
+ytm-reel-shelf-renderer,
+ytm-shorts-lockup-view-model,
+ytm-pivot-bar-item-renderer[tab-identifier="FEshorts"] {
+  display: none !important;
+}
+
+/* Mobile: Shorts in navigation */
+ytm-pivot-bar-item-renderer a[href="/shorts"] {
+  display: none !important;
+}
+
+/* ============================================
+   RECOMMENDATIONS - Hide suggested videos
+   ============================================ */
+
+/* Desktop: Sidebar recommendations on watch page */
+ytd-watch-next-secondary-results-renderer,
+#related,
+#secondary #secondary-inner {
+  display: none !important;
+}
+
+/* Desktop: "Up next" section */
+ytd-compact-video-renderer,
+ytd-compact-playlist-renderer {
+  display: none !important;
+}
+
+/* Desktop: End screen recommendations */
+.ytp-ce-element,
+.ytp-endscreen-content {
+  display: none !important;
+}
+
+/* Desktop: Autoplay */
+.ytp-autonav-endscreen-upnext-container {
+  display: none !important;
+}
+
+/* Mobile: Watch next recommendations */
+ytm-watch-next-secondary-results-renderer,
+ytm-item-section-renderer[data-content-type="watch-next"],
+ytm-compact-video-renderer,
+ytm-compact-playlist-renderer {
+  display: none !important;
+}
+
+/* Mobile: Related videos section */
+ytm-related-chip-cloud-renderer {
+  display: none !important;
+}
+
+/* ============================================
+   COMMENTS - Hide comments section
+   ============================================ */
+
+/* Desktop: Comments section */
+ytd-comments,
+#comments,
+ytd-comment-thread-renderer,
+ytd-comments-header-renderer {
+  display: none !important;
+}
+
+/* Mobile: Comments section */
+ytm-comment-section-renderer,
+ytm-comments-entry-point-header-renderer,
+ytm-slim-owner-renderer + ytm-item-section-renderer {
+  display: none !important;
+}
+
+/* ============================================
+   HOMEPAGE FEED - Minimal homepage
+   ============================================ */
+
+/* Desktop: Main feed content */
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+ytd-browse[page-subtype="home"] #contents,
+ytd-browse[page-subtype="home"] ytd-rich-item-renderer,
+ytd-browse[page-subtype="home"] ytd-rich-section-renderer {
+  display: none !important;
+}
+
+/* Desktop: Trending/Explore */
+ytd-browse[page-subtype="trending"] #contents,
+ytd-browse[page-subtype="explore"] #contents {
+  display: none !important;
+}
+
+/* Mobile: Home feed */
+ytm-browse[page-subtype="home"] ytm-rich-grid-renderer,
+ytm-browse[page-subtype="home"] ytm-rich-section-renderer,
+ytm-browse[page-subtype="home"] ytm-item-section-renderer {
+  display: none !important;
+}
+
+/* Mobile: Feed items */
+ytm-rich-item-renderer,
+ytm-video-with-context-renderer {
+  display: none !important;
+}
+
+/* Keep the search bar and header visible */
+ytd-masthead,
+ytm-mobile-topbar-renderer,
+#masthead-container {
+  display: block !important;
+}
+
+/* ============================================
+   ADDITIONAL CLEANUP
+   ============================================ */
+
+/* Hide "Breaking news" shelf */
+ytd-rich-shelf-renderer[is-show-shelf],
+ytd-horizontal-card-list-renderer {
+  display: none !important;
+}
+
+/* Hide promotional content */
+ytd-ad-slot-renderer,
+ytd-banner-promo-renderer,
+ytd-statement-banner-renderer,
+ytd-in-feed-ad-layout-renderer,
+ytm-promoted-sparkles-web-renderer {
+  display: none !important;
+}
+
+/* Hide chips/filter bar on homepage */
+ytd-browse[page-subtype="home"] #chips-wrapper,
+ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer {
+  display: none !important;
+}
+
+/* Make watch page video take full width when sidebar is hidden */
+ytd-watch-flexy[flexy][is-two-columns_] #primary.ytd-watch-flexy {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Center the video player */
+ytd-watch-flexy[flexy] #primary-inner {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+}

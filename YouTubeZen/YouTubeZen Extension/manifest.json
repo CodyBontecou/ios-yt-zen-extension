@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Zen",
+  "version": "1.0.0",
+  "description": "Hide distracting YouTube elements: Shorts, recommendations, comments, and homepage feed",
+  "icons": {
+    "48": "images/icon-48.png",
+    "96": "images/icon-96.png",
+    "128": "images/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://youtube.com/*",
+        "*://m.youtube.com/*"
+      ],
+      "css": ["content.css"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": [],
+  "host_permissions": [
+    "*://*.youtube.com/*"
+  ]
+}
