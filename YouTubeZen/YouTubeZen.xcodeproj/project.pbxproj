@@ -22,7 +22,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E6F7A8B9C0D1E2F3A4B5C01 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3C4D5E6F7A8B9C0D1E2F3A02;
+			remoteGlobalIDString = 9C0D1E2F3A4B5C6D7E8F9A02;
 			remoteInfo = "YouTubeZen Extension";
 		};
 /* End PBXContainerItemProxy section */
