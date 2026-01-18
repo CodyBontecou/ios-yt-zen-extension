@@ -138,6 +138,7 @@ struct ContentView: View {
                     .cornerRadius(16)
                     .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 4)
 
+
                     // Setup instructions
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Enable the Extension")
@@ -165,6 +166,21 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                     }
+
+                    // Manage Settings section
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Manage Settings")
+                            .font(.headline)
+
+                        InstructionStep(number: 1, text: "Open Safari and go to youtube.com")
+                        InstructionStep(number: 2, text: "Tap the \"aA\" button in the address bar")
+                        InstructionStep(number: 3, text: "Tap \"YouTube Zen\" from the menu")
+                        InstructionStep(number: 4, text: "Toggle which elements to hide or show")
+                        InstructionStep(number: 5, text: "Refresh the page to apply changes")
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(12)
 
                     // Note
                     VStack(spacing: 8) {
@@ -308,6 +324,7 @@ struct SettingToggle: View {
         }
     }
 }
+
 
 struct InstructionStep: View {
     let number: Int
