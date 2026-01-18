@@ -32,13 +32,27 @@
 
 /* Mobile: Shorts shelf */
 .yt-zen-hide-shorts ytm-reel-shelf-renderer,
-.yt-zen-hide-shorts ytm-shorts-lockup-view-model,
-.yt-zen-hide-shorts ytm-pivot-bar-item-renderer[tab-identifier="FEshorts"] {
+.yt-zen-hide-shorts ytm-shorts-lockup-view-model {
   display: none !important;
 }
 
-/* Mobile: Shorts in navigation */
-.yt-zen-hide-shorts ytm-pivot-bar-item-renderer a[href="/shorts"] {
+/* Mobile: Shorts in bottom navigation bar */
+.yt-zen-hide-shorts ytm-pivot-bar-item-renderer:has(.pivot-shorts),
+.yt-zen-hide-shorts .pivot-bar-item-tab.pivot-shorts,
+.yt-zen-hide-shorts .pivot-bar-item-title.pivot-shorts,
+.yt-zen-hide-shorts ytm-pivot-bar-item-renderer[tab-identifier="FEshorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-item-renderer a[href="/shorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-item-renderer a[href*="/shorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-item-renderer[aria-label*="Shorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-item-renderer[aria-label*="shorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-renderer a[href="/shorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-renderer a[href*="/shorts"],
+.yt-zen-hide-shorts ytm-pivot-bar-renderer a[href*="shorts"],
+.yt-zen-hide-shorts c3-tab-bar-item a[href*="shorts"],
+.yt-zen-hide-shorts a[aria-label*="Shorts"][role="tab"],
+.yt-zen-hide-shorts button[aria-label*="Shorts"],
+.yt-zen-hide-shorts [role="tab"]:has(a[href*="shorts"]),
+.yt-zen-hide-shorts ytm-pivot-bar-renderer > *:has(a[href*="shorts"]) {
   display: none !important;
 }
 
@@ -79,7 +93,15 @@
 }
 
 /* Mobile: Related videos section */
+.yt-zen-hide-recommendations ytm-item-section-renderer[section-identifier="related-items"],
 .yt-zen-hide-recommendations ytm-related-chip-cloud-renderer {
+  display: none !important;
+}
+
+/* Mobile: Individual related video items (only within watch page) */
+.yt-zen-hide-recommendations ytm-item-section-renderer[section-identifier="related-items"] ytm-video-with-context-renderer,
+.yt-zen-hide-recommendations ytm-item-section-renderer[section-identifier="related-items"] lazy-list,
+.yt-zen-hide-recommendations ytm-item-section-renderer[section-identifier="related-items"] ytm-continuation-item-renderer {
   display: none !important;
 }
 
@@ -98,7 +120,11 @@
 /* Mobile: Comments section */
 .yt-zen-hide-comments ytm-comment-section-renderer,
 .yt-zen-hide-comments ytm-comments-entry-point-header-renderer,
-.yt-zen-hide-comments ytm-slim-owner-renderer + ytm-item-section-renderer {
+.yt-zen-hide-comments ytm-slim-owner-renderer + ytm-item-section-renderer,
+.yt-zen-hide-comments yt-video-metadata-carousel-view-model,
+.yt-zen-hide-comments comments-entry-point-teaser-view-model,
+.yt-zen-hide-comments yt-comment-teaser-carousel-item-view-model,
+.yt-zen-hide-comments yt-carousel-title-view-model {
   display: none !important;
 }
 
@@ -136,6 +162,13 @@
 /* Hide chips/filter bar on homepage */
 .yt-zen-hide-homepage ytd-browse[page-subtype="home"] #chips-wrapper,
 .yt-zen-hide-homepage ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer {
+  display: none !important;
+}
+
+/* Mobile: Hide Home button in bottom navigation bar */
+.yt-zen-hide-homepage ytm-pivot-bar-item-renderer:has(.pivot-w2w),
+.yt-zen-hide-homepage .pivot-bar-item-tab.pivot-w2w,
+.yt-zen-hide-homepage .pivot-bar-item-title.pivot-w2w {
   display: none !important;
 }
 

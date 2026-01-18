@@ -32,18 +32,36 @@
       'ytd-rich-shelf-renderer[is-shorts]',
       'ytm-reel-shelf-renderer',
       'ytm-shorts-lockup-view-model',
+      '.pivot-bar-item-tab.pivot-shorts',
+      '.pivot-bar-item-title.pivot-shorts',
+      'ytm-pivot-bar-item-renderer[tab-identifier="FEshorts"]',
+      'ytm-pivot-bar-item-renderer[aria-label*="Shorts"]',
+      'ytm-pivot-bar-item-renderer[aria-label*="shorts"]',
+      'ytm-pivot-bar-renderer a[href*="shorts"]',
+      'c3-tab-bar-item a[href*="shorts"]',
+      'a[aria-label*="Shorts"][role="tab"]',
+      'button[aria-label*="Shorts"]',
     ],
     recommendations: [
       'ytd-watch-next-secondary-results-renderer',
       '#secondary #secondary-inner',
       'ytm-watch-next-secondary-results-renderer',
+      'ytm-item-section-renderer[section-identifier="related-items"]',
+      'ytm-related-chip-cloud-renderer',
     ],
     comments: [
       'ytd-comments',
       '#comments',
       'ytm-comment-section-renderer',
+      'yt-video-metadata-carousel-view-model',
+      'comments-entry-point-teaser-view-model',
+      'yt-comment-teaser-carousel-item-view-model',
+      'yt-carousel-title-view-model',
     ],
-    homepage: [], // Handled via CSS only due to complexity
+    homepage: [
+      '.pivot-bar-item-tab.pivot-w2w',
+      '.pivot-bar-item-title.pivot-w2w',
+    ],
     ads: [] // Handled via CSS only
   };
 
@@ -58,14 +76,37 @@
     'ytm-video-with-context-renderer'
   ];
 
-  // Load settings from storage
+  // Bottom navigation Shorts selectors (need parent hiding)
+  const BOTTOM_NAV_SHORTS_SELECTOR = 'a[href*="shorts"]';
+  const BOTTOM_NAV_PARENTS = [
+    'ytm-pivot-bar-item-renderer',
+    'c3-tab-bar-item',
+    '[role="tab"]',
+    'ytm-pivot-bar-renderer > *'
+  ];
+
+  // Load settings from browser storage
   async function loadSettings() {
     try {
       const result = await browserAPI.storage.local.get('zenSettings');
-      return result.zenSettings || DEFAULT_SETTINGS;
+      if (result.zenSettings) {
+        return result.zenSettings;
+      }
     } catch (error) {
       console.error('YouTube Zen: Error loading settings:', error);
-      return DEFAULT_SETTINGS;
+    }
+
+    // Fallback to defaults
+    await browserAPI.storage.local.set({ zenSettings: DEFAULT_SETTINGS });
+    return DEFAULT_SETTINGS;
+  }
+
+  // Save settings to browser storage
+  async function saveSettings(settings) {
+    try {
+      await browserAPI.storage.local.set({ zenSettings: settings });
+    } catch (error) {
+      console.error('YouTube Zen: Error saving settings:', error);
     }
   }
 
@@ -103,6 +144,19 @@
     return path === '/' || (path.startsWith('/feed/') && path !== '/feed/subscriptions');
   }
 
+  // Redirect from homepage to subscriptions feed if homepage hiding is enabled
+  function redirectToSubscriptions() {
+    if (currentSettings.homepage && isHomePage()) {
+      const isMobile = window.location.hostname.includes('m.youtube.com');
+      const subscriptionsUrl = isMobile ? '/feed/subscriptions' : '/feed/subscriptions';
+
+      // Only redirect if we're actually on the main homepage
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        window.location.replace(subscriptionsUrl);
+      }
+    }
+  }
+
   // Process and hide matching elements based on current settings
   function hideMatchingElements() {
     // Process each category
@@ -114,12 +168,72 @@
       });
     });
 
+    // Text-based detection for comments
+    if (currentSettings.comments) {
+      document.querySelectorAll('yt-carousel-title-view-model').forEach(el => {
+        const titleText = el.textContent || '';
+        if (titleText.includes('Comments') || titleText.includes('comments')) {
+          // Hide the entire carousel container
+          const carousel = el.closest('yt-video-metadata-carousel-view-model');
+          if (carousel) {
+            hideElement(carousel);
+          }
+        }
+      });
+    }
+
     // Special handling for Shorts links (hide parent video renderers)
     if (currentSettings.shorts) {
       document.querySelectorAll(SHORTS_LINK_SELECTOR).forEach(el => {
         const videoRenderer = el.closest(VIDEO_RENDERER_PARENTS.join(', '));
         if (videoRenderer) {
           hideElement(videoRenderer);
+        }
+      });
+
+      // Special handling for bottom navigation Shorts button
+      document.querySelectorAll(BOTTOM_NAV_SHORTS_SELECTOR).forEach(el => {
+        // Check if this is in the bottom navigation bar
+        const navParent = el.closest('ytm-pivot-bar-renderer, c3-tab-bar');
+        if (navParent) {
+          const navItem = el.closest(BOTTOM_NAV_PARENTS.join(', '));
+          if (navItem) {
+            hideElement(navItem);
+          }
+        }
+      });
+
+      // Hide ytm-pivot-bar-item-renderer that contains pivot-shorts
+      document.querySelectorAll('.pivot-shorts').forEach(el => {
+        const pivotItem = el.closest('ytm-pivot-bar-item-renderer');
+        if (pivotItem) {
+          hideElement(pivotItem);
+        }
+      });
+
+      // Additional check: Find any pivot bar item with "Shorts" text
+      document.querySelectorAll('ytm-pivot-bar-item-renderer').forEach(item => {
+        const text = item.textContent || '';
+        if (text.trim() === 'Shorts' || text.includes('Shorts')) {
+          hideElement(item);
+        }
+      });
+    }
+
+    // Special handling for Home button (hide parent container)
+    if (currentSettings.homepage) {
+      document.querySelectorAll('.pivot-w2w').forEach(el => {
+        const pivotItem = el.closest('ytm-pivot-bar-item-renderer');
+        if (pivotItem) {
+          hideElement(pivotItem);
+        }
+      });
+
+      // Additional check: Find any pivot bar item with "Home" text
+      document.querySelectorAll('ytm-pivot-bar-item-renderer').forEach(item => {
+        const text = item.textContent || '';
+        if (text.trim() === 'Home') {
+          hideElement(item);
         }
       });
     }
@@ -182,6 +296,7 @@
 
   // Handle YouTube SPA navigation
   function handleNavigation() {
+    redirectToSubscriptions();
     hideMatchingElements();
     if (currentSettings.recommendations) {
       expandVideoPlayer();
@@ -207,25 +322,27 @@
     };
   }
 
-  // Listen for settings changes from popup
+  // Listen for storage changes
   function setupStorageListener() {
-    browserAPI.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName === 'local' && changes.zenSettings) {
-        const newSettings = changes.zenSettings.newValue || DEFAULT_SETTINGS;
-        currentSettings = newSettings;
-        applySettingsClasses(newSettings);
+    // Listen for storage changes (from popup or other tabs)
+    if (browserAPI.storage && browserAPI.storage.onChanged) {
+      browserAPI.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === 'local' && changes.zenSettings) {
+          const newSettings = changes.zenSettings.newValue || DEFAULT_SETTINGS;
 
-        // Handle video player expansion
-        if (newSettings.recommendations) {
-          expandVideoPlayer();
-        } else {
-          resetVideoPlayer();
+          currentSettings = newSettings;
+          applySettingsClasses(newSettings);
+
+          if (newSettings.recommendations) {
+            expandVideoPlayer();
+          } else {
+            resetVideoPlayer();
+          }
+
+          hideMatchingElements();
         }
-
-        // Re-run hiding with new settings
-        hideMatchingElements();
-      }
-    });
+      });
+    }
   }
 
   // Initialize
@@ -236,6 +353,9 @@
     // Apply CSS classes for CSS-based hiding
     applySettingsClasses(currentSettings);
 
+    // Redirect to subscriptions if on homepage and homepage hiding is enabled
+    redirectToSubscriptions();
+
     // Initial hide with JS backup
     hideMatchingElements();
 
@@ -245,7 +365,7 @@
     // Set up navigation listener
     setupNavigationListener();
 
-    // Listen for settings changes
+    // Set up storage listener to detect changes
     setupStorageListener();
 
     // Run again after DOM is fully loaded
