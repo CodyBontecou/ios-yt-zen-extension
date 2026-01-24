@@ -6,22 +6,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500&display=swap');
 
 :root {
-  /* Color palette - warm earth tones with sage accent */
-  --bg-primary: #FAF8F5;
-  --bg-secondary: #F3F0EA;
-  --bg-card: #FFFFFF;
+  /* Color palette - Deep red aesthetic matching app icon */
+  --bg-primary: #8B1A1A;
+  --bg-secondary: #A52A2A;
+  --bg-card: #751515;
 
-  --text-primary: #2C2825;
-  --text-secondary: #6B6560;
-  --text-muted: #9A9590;
+  --text-primary: #FFFFFF;
+  --text-secondary: #F5E6E6;
+  --text-muted: #D9B8B8;
 
-  --accent: #7D8B75;
-  --accent-light: #A8B5A0;
-  --accent-glow: rgba(125, 139, 117, 0.2);
+  --accent: #C74444;
+  --accent-light: #E56B6B;
+  --accent-glow: rgba(199, 68, 68, 0.3);
 
-  --border: rgba(44, 40, 37, 0.08);
-  --shadow-soft: 0 2px 8px rgba(44, 40, 37, 0.04);
-  --shadow-medium: 0 4px 20px rgba(44, 40, 37, 0.08);
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.4);
 
   /* Typography */
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -51,7 +51,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: var(--bg-primary);
+  background: linear-gradient(135deg, #8B1A1A 0%, #6B1414 50%, #8B1A1A 100%);
   color: var(--text-primary);
   line-height: 1.5;
   min-width: 320px;
@@ -90,7 +90,7 @@ body {
 .bg-circle-2 {
   width: 150px;
   height: 150px;
-  background: radial-gradient(circle, rgba(200, 190, 180, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(229, 107, 107, 0.2) 0%, transparent 70%);
   bottom: 40px;
   left: -50px;
   animation: float 10s ease-in-out infinite reverse;
@@ -121,7 +121,8 @@ body {
 .logo-icon {
   width: 100%;
   height: 100%;
-  color: var(--accent);
+  color: var(--text-primary);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
 }
 
 .title {
@@ -217,7 +218,7 @@ body {
 
 .setting-card:hover {
   box-shadow: var(--shadow-medium);
-  border-color: rgba(125, 139, 117, 0.2);
+  border-color: var(--accent-light);
 }
 
 .setting-card:active {
@@ -248,7 +249,7 @@ body {
   height: 36px;
   border-radius: 10px;
   background: var(--bg-secondary);
-  color: var(--accent);
+  color: var(--text-primary);
   flex-shrink: 0;
   transition: all 0.3s var(--ease-out);
 }
@@ -259,7 +260,9 @@ body {
 }
 
 .setting-card:hover .setting-icon {
-  background: var(--accent-glow);
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .setting-info {
@@ -329,7 +332,7 @@ body {
 
 .toggle input:checked + .toggle-track .toggle-thumb {
   transform: translateX(18px);
-  box-shadow: 0 2px 8px rgba(125, 139, 117, 0.3);
+  box-shadow: 0 2px 8px rgba(199, 68, 68, 0.4);
 }
 
 /* Toggle focus state */
@@ -449,7 +452,7 @@ body {
   left: 50%;
   transform: translateX(-50%) translateY(100%);
   padding: var(--space-sm) var(--space-md);
-  background: var(--text-primary);
+  background: var(--accent);
   color: white;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -457,6 +460,7 @@ body {
   opacity: 0;
   transition: all 0.3s var(--ease-spring);
   pointer-events: none;
+  box-shadow: var(--shadow-medium);
 }
 
 .save-indicator.show {
@@ -482,30 +486,30 @@ body {
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg-primary: #1A1918;
-    --bg-secondary: #252321;
-    --bg-card: #2A2826;
+    --bg-primary: #5A0F0F;
+    --bg-secondary: #6B1212;
+    --bg-card: #4A0C0C;
 
-    --text-primary: #F5F3F0;
-    --text-secondary: #A8A5A0;
-    --text-muted: #706D68;
+    --text-primary: #FFFFFF;
+    --text-secondary: #F5E6E6;
+    --text-muted: #C9A8A8;
 
-    --accent: #9CAA94;
-    --accent-light: #B8C4B0;
-    --accent-glow: rgba(156, 170, 148, 0.15);
+    --accent: #D65555;
+    --accent-light: #E87878;
+    --accent-glow: rgba(214, 85, 85, 0.25);
 
-    --border: rgba(255, 255, 255, 0.08);
-    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --border: rgba(255, 255, 255, 0.15);
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.5);
   }
 
   .toggle-thumb {
-    background: var(--bg-card);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    background: #FFFFFF;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   }
 
   .toggle input:checked + .toggle-track .toggle-thumb {
-    background: white;
+    background: #FFFFFF;
   }
 }
 

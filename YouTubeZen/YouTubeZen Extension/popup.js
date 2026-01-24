@@ -12,11 +12,12 @@
     recommendations: true,
     comments: true,
     homepage: true,
-    ads: true
+    ads: true,
+    appbanner: true
   };
 
   // Setting IDs mapped to their toggle elements
-  const SETTING_IDS = ['shorts', 'recommendations', 'comments', 'homepage', 'ads'];
+  const SETTING_IDS = ['shorts', 'recommendations', 'comments', 'homepage', 'ads', 'appbanner'];
 
   // Browser API compatibility (Chrome/Safari)
   const browserAPI = typeof browser !== 'undefined' ? browser : chrome;

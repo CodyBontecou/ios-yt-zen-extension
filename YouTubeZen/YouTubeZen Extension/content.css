@@ -192,6 +192,87 @@
 }
 
 /* ============================================
+   APP INSTALL BANNERS
+   ============================================ */
+
+/* Hide iOS Smart App Banner (the native "Open in the YouTube app" banner at top) */
+/* Safari adds margin-top to html element for the Smart App Banner */
+.yt-zen-hide-appbanner html {
+  margin-top: 0 !important;
+  transform: translateY(-60px) !important;
+}
+
+.yt-zen-hide-appbanner body {
+  margin-top: 60px !important;
+}
+
+.yt-zen-hide-appbanner apple-smart-app-banner,
+.yt-zen-hide-appbanner meta[name="apple-itunes-app"] {
+  display: none !important;
+}
+
+/* Alternative: Hide the banner container if it uses a different element */
+.yt-zen-hide-appbanner body::before,
+.yt-zen-hide-appbanner html::before {
+  display: none !important;
+}
+
+/* Hide "Open in the YouTube app" banner (Mobile) - Primary selectors */
+.yt-zen-hide-appbanner ytm-promoted-service-drawer-renderer,
+.yt-zen-hide-appbanner ytm-mealbar-promo-renderer,
+.yt-zen-hide-appbanner ytm-app-promo-renderer,
+.yt-zen-hide-appbanner ytm-promoted-video-renderer,
+.yt-zen-hide-appbanner ytm-single-action-watch-card-renderer,
+.yt-zen-hide-appbanner ytm-bottom-sheet-renderer,
+.yt-zen-hide-appbanner ytm-drawer-renderer {
+  display: none !important;
+}
+
+/* Common banner class names and IDs */
+.yt-zen-hide-appbanner .app-banner,
+.yt-zen-hide-appbanner .promo-drawer,
+.yt-zen-hide-appbanner .mealbar-popup,
+.yt-zen-hide-appbanner #app-banner,
+.yt-zen-hide-appbanner #promo-banner,
+.yt-zen-hide-appbanner div[class*="app-banner"],
+.yt-zen-hide-appbanner div[class*="app-promo"],
+.yt-zen-hide-appbanner div[class*="install-banner"],
+.yt-zen-hide-appbanner div[class*="AppBanner"],
+.yt-zen-hide-appbanner div[id*="app-banner"],
+.yt-zen-hide-appbanner div[id*="appBanner"] {
+  display: none !important;
+}
+
+/* Hide dialogs and modals promoting app (only if they contain app-related content) */
+.yt-zen-hide-appbanner c3-bottom-sheet,
+.yt-zen-hide-appbanner tp-yt-paper-dialog:has(a[href*="apps.apple.com"]),
+.yt-zen-hide-appbanner tp-yt-paper-dialog:has(a[href*="play.google.com"]) {
+  display: none !important;
+}
+
+/* Hide links to app stores */
+.yt-zen-hide-appbanner a[href*="apps.apple.com"],
+.yt-zen-hide-appbanner a[href*="play.google.com"],
+.yt-zen-hide-appbanner a[href*="itunes.apple.com"] {
+  display: none !important;
+}
+
+/* YouTube mobile specific banner components */
+.yt-zen-hide-appbanner ytm-promoted-sparkles-text-search-renderer,
+.yt-zen-hide-appbanner ytm-companion-slot-renderer,
+.yt-zen-hide-appbanner ytm-promotional-banner-renderer,
+.yt-zen-hide-appbanner .overlay.ytm-mealbar-promo-renderer {
+  display: none !important;
+}
+
+/* Header/top banners */
+.yt-zen-hide-appbanner [class*="header-banner"],
+.yt-zen-hide-appbanner [class*="top-banner"],
+.yt-zen-hide-appbanner [class*="promo-bar"] {
+  display: none !important;
+}
+
+/* ============================================
    LAYOUT ADJUSTMENTS
    ============================================ */
 

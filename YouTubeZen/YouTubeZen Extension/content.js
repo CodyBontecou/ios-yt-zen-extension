@@ -4,6 +4,48 @@
  * with user-configurable settings
  */
 
+// IMMEDIATE EXECUTION: Remove Smart App Banner meta tag before anything else
+// This must run synchronously at document_start to catch the meta tag before Safari processes it
+(function() {
+  'use strict';
+
+  // Remove Smart App Banner meta tag
+  function removeSmartAppBanner() {
+    const meta = document.querySelector('meta[name="apple-itunes-app"]');
+    if (meta) {
+      meta.remove();
+      console.log('YouTube Zen: Removed Smart App Banner meta tag');
+    }
+  }
+
+  // Remove immediately if present
+  removeSmartAppBanner();
+
+  // Also observe for dynamically added tags
+  const observer = new MutationObserver(() => {
+    removeSmartAppBanner();
+  });
+
+  // Start observing as soon as possible
+  if (document.documentElement) {
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+  } else {
+    // If documentElement doesn't exist yet, wait for it
+    const checkInterval = setInterval(() => {
+      if (document.documentElement) {
+        clearInterval(checkInterval);
+        observer.observe(document.documentElement, {
+          childList: true,
+          subtree: true
+        });
+      }
+    }, 10);
+  }
+})();
+
 (function() {
   'use strict';
 
@@ -16,7 +58,8 @@
     recommendations: true,
     comments: true,
     homepage: true,
-    ads: true
+    ads: true,
+    appbanner: true
   };
 
   // Current settings cache
@@ -62,7 +105,23 @@
       '.pivot-bar-item-tab.pivot-w2w',
       '.pivot-bar-item-title.pivot-w2w',
     ],
-    ads: [] // Handled via CSS only
+    ads: [], // Handled via CSS only
+    appbanner: [
+      'ytm-promoted-service-drawer-renderer',
+      'ytm-mealbar-promo-renderer',
+      'ytm-app-promo-renderer',
+      'ytm-promoted-video-renderer',
+      '.app-banner',
+      '.promo-drawer',
+      '.mealbar-popup',
+      '[role="dialog"][aria-label*="app"]',
+      '[role="dialog"][aria-label*="App"]',
+      'ytm-single-action-watch-card-renderer',
+      'ytm-bottom-sheet-renderer',
+      'div[class*="app-banner"]',
+      'div[class*="app-promo"]',
+      'div[class*="install-banner"]'
+    ]
   };
 
   // Shorts link selectors (need special handling to hide parent)
@@ -167,6 +226,36 @@
         document.querySelectorAll(selector).forEach(hideElement);
       });
     });
+
+    // Special handling for app banners - text-based detection
+    if (currentSettings.appbanner) {
+      // Find elements containing "Open in the YouTube app" or similar text
+      const textPatterns = [
+        /open in.*app/i,
+        /get.*youtube.*app/i,
+        /download.*app/i,
+        /continue in app/i,
+        /view in app/i
+      ];
+
+      // Check all divs and common container elements
+      document.querySelectorAll('div, aside, section, [role="dialog"], [role="alertdialog"]').forEach(el => {
+        const text = el.textContent || '';
+        const hasAppText = textPatterns.some(pattern => pattern.test(text));
+
+        if (hasAppText) {
+          // Check if this is a small banner/promo (not the whole page)
+          const rect = el.getBoundingClientRect();
+          if (rect.height < window.innerHeight * 0.5 && rect.width > 0) {
+            // Additional check: does it contain app store links?
+            const hasAppLink = el.querySelector('a[href*="apps.apple.com"], a[href*="play.google.com"], a[href*="itunes.apple"]');
+            if (hasAppLink || el.closest('[class*="banner"], [class*="promo"], [class*="drawer"]')) {
+              hideElement(el);
+            }
+          }
+        }
+      });
+    }
 
     // Text-based detection for comments
     if (currentSettings.comments) {
@@ -345,10 +434,59 @@
     }
   }
 
+  // Remove iOS Smart App Banner meta tag
+  function removeSmartAppBanner() {
+    // Remove the meta tag that triggers the iOS Smart App Banner
+    const metaTags = document.querySelectorAll('meta[name="apple-itunes-app"]');
+    metaTags.forEach(tag => {
+      console.log('YouTube Zen: Removing Smart App Banner meta tag');
+      tag.remove();
+    });
+
+    // Also check for and remove any other app banner meta tags
+    const appBannerMetas = document.querySelectorAll('meta[name*="app-id"], meta[name*="app-argument"]');
+    appBannerMetas.forEach(tag => tag.remove());
+  }
+
+  // Set up observer to remove Smart App Banner meta tags as they're added
+  function setupSmartAppBannerRemoval() {
+    // Initial removal
+    removeSmartAppBanner();
+
+    // Watch for meta tags being added to the head
+    const headObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeName === 'META') {
+            const name = node.getAttribute('name');
+            if (name === 'apple-itunes-app' || name?.includes('app-id') || name?.includes('app-argument')) {
+              console.log('YouTube Zen: Blocked Smart App Banner meta tag from being added');
+              node.remove();
+            }
+          }
+        }
+      }
+    });
+
+    // Start observing the head (or document if head doesn't exist yet)
+    const targetNode = document.head || document.documentElement;
+    headObserver.observe(targetNode, {
+      childList: true,
+      subtree: true
+    });
+
+    return headObserver;
+  }
+
   // Initialize
   async function init() {
     // Load settings
     currentSettings = await loadSettings();
+
+    // Set up Smart App Banner removal (only if enabled)
+    if (currentSettings.appbanner) {
+      setupSmartAppBannerRemoval();
+    }
 
     // Apply CSS classes for CSS-based hiding
     applySettingsClasses(currentSettings);
@@ -387,6 +525,16 @@
       }
     });
   }
+
+  // Remove Smart App Banner immediately (before settings load)
+  // This runs synchronously at document_start to catch the meta tag early
+  (function removeSmartAppBannerEarly() {
+    const metaTags = document.querySelectorAll('meta[name="apple-itunes-app"]');
+    if (metaTags.length > 0) {
+      console.log('YouTube Zen: Early removal of Smart App Banner');
+      metaTags.forEach(tag => tag.remove());
+    }
+  })();
 
   // Start initialization
   init();
