@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Zen - Curate Your Focus</title>
+  <style>
+    :root {
+      --red: #D94343;
+      --black: #000000;
+      --white: #FFFFFF;
+      --gray: #999999;
+      --border: #000000;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', 'Courier', monospace;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.5;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+    }
+
+    /* Layout Grid */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 2px solid var(--black);
+      padding: 20px 0;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: -0.05em;
+    }
+
+    .price-tag {
+      font-size: 14px;
+      padding: 6px 16px;
+      background: var(--black);
+      color: var(--white);
+      border-radius: 0;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 120px 0 100px;
+      border-bottom: 2px solid var(--black);
+    }
+
+    .hero h1 {
+      font-size: 96px;
+      font-weight: bold;
+      line-height: 0.9;
+      margin-bottom: 20px;
+      letter-spacing: -0.05em;
+    }
+
+    .hero .tagline {
+      font-size: 24px;
+      margin-bottom: 60px;
+      color: var(--gray);
+    }
+
+    .hero .cta {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--red);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+      border: 2px solid var(--black);
+      transition: all 0.2s ease;
+    }
+
+    .hero .cta:hover {
+      background: var(--black);
+    }
+
+    .hero .note {
+      display: block;
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* Specs Grid */
+    .specs {
+      padding: 80px 0;
+      border-bottom: 2px solid var(--black);
+    }
+
+    .section-label {
+      font-size: 12px;
+      margin-bottom: 40px;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+    }
+
+    .spec-item {
+      border-left: 2px solid var(--black);
+      padding-left: 20px;
+    }
+
+    .spec-number {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    /* Features List */
+    .features {
+      padding: 80px 0;
+      border-bottom: 2px solid var(--black);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      background: var(--black);
+      border: 2px solid var(--black);
+    }
+
+    .feature-item {
+      background: var(--white);
+      padding: 40px;
+      transition: background 0.2s ease;
+    }
+
+    .feature-item:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .feature-number {
+      font-size: 12px;
+      color: var(--gray);
+      margin-bottom: 12px;
+    }
+
+    .feature-item:hover .feature-number {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .feature-item:hover .feature-desc {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Demo Section */
+    .demo {
+      padding: 80px 0;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .demo-wrapper {
+      aspect-ratio: 16/9;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--white);
+      position: relative;
+    }
+
+    .demo-label {
+      font-size: 24px;
+      text-align: center;
+    }
+
+    /* Process */
+    .process {
+      padding: 80px 0;
+      border-bottom: 2px solid var(--black);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--black);
+      border: 2px solid var(--black);
+    }
+
+    .process-step {
+      background: var(--white);
+      padding: 40px;
+      min-height: 280px;
+    }
+
+    .process-step:nth-child(2) {
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .process-step:nth-child(2) .step-number,
+    .process-step:nth-child(2) .step-desc {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .step-number {
+      font-size: 72px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      border-bottom: 2px solid var(--black);
+      background: var(--red);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .cta p {
+      font-size: 18px;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .cta .btn-primary {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--white);
+      color: var(--black);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+      border: 2px solid var(--black);
+      margin: 0 10px;
+      transition: all 0.2s ease;
+    }
+
+    .cta .btn-primary:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .cta .btn-secondary {
+      display: inline-block;
+      padding: 16px 40px;
+      background: transparent;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: bold;
+      border: 2px solid var(--white);
+      margin: 0 10px;
+      transition: all 0.2s ease;
+    }
+
+    .cta .btn-secondary:hover {
+      background: var(--white);
+      color: var(--red);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    footer a {
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--red);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .specs-grid,
+      .process-grid {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 64px;
+      }
+
+      .spec-item {
+        border-left: none;
+        border-top: 2px solid var(--black);
+        padding-left: 0;
+        padding-top: 20px;
+      }
+
+      .spec-item:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container,
+      .header-content {
+        padding: 0 20px;
+      }
+
+      .hero {
+        padding: 80px 0 60px;
+      }
+
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .hero .tagline {
+        font-size: 18px;
+      }
+
+      .specs,
+      .features,
+      .process,
+      .cta {
+        padding: 60px 0;
+      }
+
+      .cta h2 {
+        font-size: 32px;
+      }
+
+      .cta .btn-primary,
+      .cta .btn-secondary {
+        display: block;
+        margin: 10px auto;
+        max-width: 300px;
+      }
+    }
+
+    /* Utilities */
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo">YOUTUBE ZEN</div>
+      <div class="price-tag">$1.99</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>CURATE<br>YOUR<br>FOCUS</h1>
+      <p class="tagline">A Safari extension for intentional watching</p>
+      <a href="#download" class="cta">GET FOR iOS & SAFARI — $1.99</a>
+      <span class="note">ONE-TIME PURCHASE / NO SUBSCRIPTION</span>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section class="specs">
+    <div class="container">
+      <div class="section-label">SPECIFICATIONS</div>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <div class="spec-number">15+</div>
+          <div class="spec-label">CUSTOMIZATIONS</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-number">0</div>
+          <div class="spec-label">DISTRACTIONS</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-number">$1.99</div>
+          <div class="spec-label">ONE-TIME</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="container">
+      <div class="section-label">FEATURES</div>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-number">01</div>
+          <div class="feature-title">SHORTS REMOVAL</div>
+          <div class="feature-desc">Eliminate vertical video feeds and navigation elements</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-number">02</div>
+          <div class="feature-title">RECOMMENDATIONS</div>
+          <div class="feature-desc">Hide sidebar suggestions, end screens, and autoplay</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-number">03</div>
+          <div class="feature-title">COMMENTS</div>
+          <div class="feature-desc">Remove comment sections from all videos</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-number">04</div>
+          <div class="feature-title">HOMEPAGE FEED</div>
+          <div class="feature-desc">Clear the homepage video grid completely</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-number">05</div>
+          <div class="feature-title">PROMOTIONS</div>
+          <div class="feature-desc">Block banners, ads, and breaking news alerts</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-number">06</div>
+          <div class="feature-title">GRANULAR CONTROL</div>
+          <div class="feature-desc">15+ options including descriptions, buttons, metadata, and more</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="demo">
+    <div class="container">
+      <div class="section-label" style="color: rgba(255,255,255,0.5);">DEMONSTRATION</div>
+      <div class="demo-wrapper">
+        <div class="demo-label">[ WATCH DEMO VIDEO ]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process">
+    <div class="container">
+      <div class="section-label">INSTALLATION</div>
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-title">DOWNLOAD</div>
+          <div class="step-desc">Get YouTube Zen for $1.99 from the App Store for iOS and Safari</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-title">CUSTOMIZE</div>
+          <div class="step-desc">Choose which distractions to hide with simple toggle switches</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-title">FOCUS</div>
+          <div class="step-desc">Enjoy a cleaner, calmer YouTube experience instantly</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="download">
+    <div class="container">
+      <h2>READY TO FOCUS?</h2>
+      <p>Join thousands taking back control</p>
+      <a href="#" class="btn-primary">GET FOR $1.99</a>
+      <a href="#" class="btn-secondary">LEARN MORE</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 YOUTUBE ZEN / NOT AFFILIATED WITH YOUTUBE OR GOOGLE</p>
+      <p style="margin-top: 10px;"><a href="#">PRIVACY</a> / <a href="#">TERMS</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
