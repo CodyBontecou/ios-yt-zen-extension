@@ -13,11 +13,21 @@
     comments: true,
     homepage: true,
     ads: true,
-    appbanner: true
+    appbanner: true,
+    descriptions: false,
+    actionbuttons: false,
+    subscribebutton: false,
+    filterchips: false,
+    livechat: false,
+    channelinfo: false,
+    videometadata: false,
+    hashtags: false,
+    searchbar: false,
+    askbutton: false
   };
 
   // Setting IDs mapped to their toggle elements
-  const SETTING_IDS = ['shorts', 'recommendations', 'comments', 'homepage', 'ads', 'appbanner'];
+  const SETTING_IDS = ['shorts', 'recommendations', 'comments', 'homepage', 'ads', 'appbanner', 'descriptions', 'actionbuttons', 'subscribebutton', 'filterchips', 'livechat', 'channelinfo', 'videometadata', 'hashtags', 'searchbar', 'askbutton'];
 
   // Browser API compatibility (Chrome/Safari)
   const browserAPI = typeof browser !== 'undefined' ? browser : chrome;

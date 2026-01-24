@@ -273,6 +273,268 @@
 }
 
 /* ============================================
+   VIDEO DESCRIPTIONS - Hide video descriptions
+   ============================================ */
+
+/* Desktop: Video description */
+.yt-zen-hide-descriptions ytd-expander,
+.yt-zen-hide-descriptions ytd-video-secondary-info-renderer #description,
+.yt-zen-hide-descriptions ytd-expandable-video-description-body-renderer {
+  display: none !important;
+}
+
+/* Mobile: Video description */
+.yt-zen-hide-descriptions ytm-expandable-video-description-body-renderer,
+.yt-zen-hide-descriptions ytm-structured-description-content-renderer,
+.yt-zen-hide-descriptions ytm-macro-markers-list-renderer {
+  display: none !important;
+}
+
+/* ============================================
+   ACTION BUTTONS - Hide like/dislike/share
+   ============================================ */
+
+/* Desktop: Action buttons container */
+.yt-zen-hide-actionbuttons ytd-menu-renderer#menu,
+.yt-zen-hide-actionbuttons ytd-video-primary-info-renderer #menu,
+.yt-zen-hide-actionbuttons ytd-sentiment-bar-renderer,
+.yt-zen-hide-actionbuttons ytd-toggle-button-renderer {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Like button */
+.yt-zen-hide-actionbuttons like-button-view-model,
+.yt-zen-hide-actionbuttons segmented-like-dislike-button-view-model like-button-view-model,
+.yt-zen-hide-actionbuttons button[aria-label*="like this video" i] {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Dislike button */
+.yt-zen-hide-actionbuttons dislike-button-view-model,
+.yt-zen-hide-actionbuttons segmented-like-dislike-button-view-model dislike-button-view-model,
+.yt-zen-hide-actionbuttons button[aria-label*="Dislike" i] {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Share button */
+.yt-zen-hide-actionbuttons button[aria-label*="Share" i],
+.yt-zen-hide-actionbuttons ytm-button-renderer[aria-label*="Share"],
+.yt-zen-hide-actionbuttons ytm-slim-video-action-bar-renderer button[aria-label="Share"] {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Save button */
+.yt-zen-hide-actionbuttons button[aria-label*="Save" i],
+.yt-zen-hide-actionbuttons ytm-button-renderer[aria-label*="Save"],
+.yt-zen-hide-actionbuttons ytm-slim-video-action-bar-renderer button[aria-label*="Save"] {
+  display: none !important;
+}
+
+/* Mobile: Action bar (all buttons) */
+.yt-zen-hide-actionbuttons ytm-slim-video-action-bar-renderer,
+.yt-zen-hide-actionbuttons segmented-like-dislike-button-view-model {
+  display: none !important;
+}
+
+/* Shorts Page: Like button with count */
+.yt-zen-hide-actionbuttons reel-action-bar-view-model like-button-view-model,
+.yt-zen-hide-actionbuttons label:has(button[aria-label*="like this video" i]) {
+  display: none !important;
+}
+
+/* Shorts Page: Dislike button */
+.yt-zen-hide-actionbuttons reel-action-bar-view-model dislike-button-view-model,
+.yt-zen-hide-actionbuttons label:has(button[aria-label*="Dislike" i]) {
+  display: none !important;
+}
+
+/* Shorts Page: Share button */
+.yt-zen-hide-actionbuttons label:has(button[aria-label*="Share" i]),
+.yt-zen-hide-actionbuttons button[aria-label="Share this video"] {
+  display: none !important;
+}
+
+/* Shorts Page: Action bar */
+.yt-zen-hide-actionbuttons reel-action-bar-view-model {
+  display: none !important;
+}
+
+/* ============================================
+   SUBSCRIBE BUTTON - Hide subscribe buttons
+   ============================================ */
+
+/* Desktop: Subscribe button */
+.yt-zen-hide-subscribebutton ytd-subscribe-button-renderer,
+.yt-zen-hide-subscribebutton #subscribe-button {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Subscribe button */
+.yt-zen-hide-subscribebutton ytm-subscribe-button-renderer,
+.yt-zen-hide-subscribebutton ytm-subscribe-button-renderer button,
+.yt-zen-hide-subscribebutton button[aria-label*="Subscribe" i],
+.yt-zen-hide-subscribebutton button[aria-label*="Unsubscribe" i],
+.yt-zen-hide-subscribebutton ytm-slim-owner-renderer ytm-subscribe-button-renderer {
+  display: none !important;
+}
+
+/* Shorts Page: Subscribe button */
+.yt-zen-hide-subscribebutton yt-subscribe-button-view-model,
+.yt-zen-hide-subscribebutton yt-subscribe-button-view-model button,
+.yt-zen-hide-subscribebutton button[aria-label*="Subscribe to @" i],
+.yt-zen-hide-subscribebutton yt-reel-channel-bar-view-model yt-subscribe-button-view-model {
+  display: none !important;
+}
+
+/* ============================================
+   FILTER CHIPS - Hide category filter bars
+   ============================================ */
+
+/* Desktop: Chip bar */
+.yt-zen-hide-filterchips ytd-feed-filter-chip-bar-renderer,
+.yt-zen-hide-filterchips #chips-wrapper,
+.yt-zen-hide-filterchips yt-chip-cloud-renderer,
+.yt-zen-hide-filterchips ytd-chip-cloud-renderer {
+  display: none !important;
+}
+
+/* Mobile: Chip bar */
+.yt-zen-hide-filterchips ytm-chip-bar-renderer,
+.yt-zen-hide-filterchips ytm-chip-cloud-chip-renderer,
+.yt-zen-hide-filterchips ytm-chip-cloud-renderer {
+  display: none !important;
+}
+
+/* ============================================
+   LIVE CHAT - Hide live chat and live badges
+   ============================================ */
+
+/* Desktop: Live chat */
+.yt-zen-hide-livechat ytd-live-chat-frame,
+.yt-zen-hide-livechat yt-live-chat-renderer,
+.yt-zen-hide-livechat yt-live-chat-message-renderer,
+.yt-zen-hide-livechat yt-live-chat-paid-message-renderer {
+  display: none !important;
+}
+
+/* Mobile: Live chat */
+.yt-zen-hide-livechat ytm-live-chat-frame,
+.yt-zen-hide-livechat #chat,
+.yt-zen-hide-livechat #chat-container {
+  display: none !important;
+}
+
+/* Live badges on video thumbnails */
+.yt-zen-hide-livechat .badge-shape-wiz--live-badge,
+.yt-zen-hide-livechat badge-shape[aria-label="LIVE"],
+.yt-zen-hide-livechat .ytp-live-badge {
+  display: none !important;
+}
+
+/* ============================================
+   CHANNEL INFO - Hide channel avatar, name, subscriber count
+   ============================================ */
+
+/* Mobile Watch Page: Channel avatar */
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer yt-avatar-shape,
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer img,
+.yt-zen-hide-channelinfo .slim-owner-icon-and-title img,
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer yt-decorated-avatar-view-model {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Channel name */
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer .slim-owner-channel-name,
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer a[href*="/@"],
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer heading,
+.yt-zen-hide-channelinfo .slim-owner-channel-name {
+  display: none !important;
+}
+
+/* Mobile Watch Page: Subscriber count */
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer .slim-owner-meta-item,
+.yt-zen-hide-channelinfo ytm-slim-owner-renderer yt-content-metadata-view-model span {
+  display: none !important;
+}
+
+/* Shorts Page: Channel avatar */
+.yt-zen-hide-channelinfo button[aria-label="Go to channel"],
+.yt-zen-hide-channelinfo yt-reel-channel-bar-view-model yt-decorated-avatar-view-model,
+.yt-zen-hide-channelinfo yt-reel-channel-bar-view-model img {
+  display: none !important;
+}
+
+/* Shorts Page: Channel name */
+.yt-zen-hide-channelinfo yt-reel-channel-bar-view-model a,
+.yt-zen-hide-channelinfo a[href*="/@"][href*="/shorts"],
+.yt-zen-hide-channelinfo yt-reel-channel-bar-view-model span {
+  display: none !important;
+}
+
+/* ============================================
+   VIDEO METADATA - Hide view count & upload date
+   ============================================ */
+
+/* Mobile Watch Page: View count and upload date */
+.yt-zen-hide-videometadata ytm-slim-video-information-renderer span[dir="auto"],
+.yt-zen-hide-videometadata .slim-video-information-views,
+.yt-zen-hide-videometadata .slim-video-information-date {
+  display: none !important;
+}
+
+/* ============================================
+   HASHTAGS - Hide hashtag links
+   ============================================ */
+
+/* Both Watch & Shorts: Hashtags */
+.yt-zen-hide-hashtags a[href*="/hashtag/"],
+.yt-zen-hide-hashtags ytm-slim-video-information-renderer a[href*="/hashtag/"] {
+  display: none !important;
+}
+
+/* ============================================
+   SEARCH BAR - Hide search functionality
+   ============================================ */
+
+/* Header search button */
+.yt-zen-hide-searchbar button[aria-label="Search YouTube"],
+.yt-zen-hide-searchbar button[aria-label*="Search" i],
+.yt-zen-hide-searchbar ytm-mobile-topbar-renderer button[aria-label*="Search"] {
+  display: none !important;
+}
+
+/* Search box (when expanded) */
+.yt-zen-hide-searchbar yt-searchbox,
+.yt-zen-hide-searchbar ytm-searchbox,
+.yt-zen-hide-searchbar form[action="/results"] {
+  display: none !important;
+}
+
+/* Search input */
+.yt-zen-hide-searchbar yt-searchbox input,
+.yt-zen-hide-searchbar ytm-searchbox input,
+.yt-zen-hide-searchbar input[placeholder*="Search" i] {
+  display: none !important;
+}
+
+/* Voice search */
+.yt-zen-hide-searchbar button[aria-label="Search with your voice"],
+.yt-zen-hide-searchbar button[aria-label*="voice" i] {
+  display: none !important;
+}
+
+/* ============================================
+   ASK BUTTON - Hide AI "Ask" feature
+   ============================================ */
+
+/* Ask button (AI feature) */
+.yt-zen-hide-askbutton button[aria-label="Ask"],
+.yt-zen-hide-askbutton button[aria-label*="Ask" i],
+.yt-zen-hide-askbutton ytm-button-renderer[aria-label*="Ask"] {
+  display: none !important;
+}
+
+/* ============================================
    LAYOUT ADJUSTMENTS
    ============================================ */
 

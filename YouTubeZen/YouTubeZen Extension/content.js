@@ -59,7 +59,17 @@
     comments: true,
     homepage: true,
     ads: true,
-    appbanner: true
+    appbanner: true,
+    descriptions: false,      // Off by default - many users want descriptions
+    actionbuttons: false,     // Off by default - like/dislike useful for feedback
+    subscribebutton: false,   // Off by default - users may want to subscribe
+    filterchips: false,       // Off by default - useful for browsing
+    livechat: false,         // Off by default - some users enjoy live chat
+    channelinfo: false,      // Off by default - users need to know the creator
+    videometadata: false,    // Off by default - views/date can be useful
+    hashtags: false,         // Off by default - hashtags sometimes useful
+    searchbar: false,        // Off by default - search is essential
+    askbutton: false         // Off by default - AI feature opt-in
   };
 
   // Current settings cache
@@ -121,6 +131,73 @@
       'div[class*="app-banner"]',
       'div[class*="app-promo"]',
       'div[class*="install-banner"]'
+    ],
+    descriptions: [
+      'ytd-expander',
+      'ytd-expandable-video-description-body-renderer',
+      'ytm-expandable-video-description-body-renderer',
+      'ytm-structured-description-content-renderer',
+      'ytm-macro-markers-list-renderer'
+    ],
+    actionbuttons: [
+      'ytd-menu-renderer#menu',
+      'ytd-sentiment-bar-renderer',
+      'ytd-toggle-button-renderer',
+      'ytm-slim-video-action-bar-renderer',
+      'segmented-like-dislike-button-view-model',
+      'like-button-view-model',
+      'dislike-button-view-model',
+      'reel-action-bar-view-model'
+    ],
+    subscribebutton: [
+      'ytd-subscribe-button-renderer',
+      'ytm-subscribe-button-renderer',
+      'yt-subscribe-button-view-model'
+    ],
+    filterchips: [
+      'ytd-feed-filter-chip-bar-renderer',
+      'ytd-chip-cloud-renderer',
+      'yt-chip-cloud-renderer',
+      'ytm-chip-bar-renderer',
+      'ytm-chip-cloud-chip-renderer',
+      'ytm-chip-cloud-renderer'
+    ],
+    livechat: [
+      'ytd-live-chat-frame',
+      'yt-live-chat-renderer',
+      'yt-live-chat-message-renderer',
+      'yt-live-chat-paid-message-renderer',
+      'ytm-live-chat-frame',
+      '.badge-shape-wiz--live-badge',
+      'badge-shape[aria-label="LIVE"]',
+      '.ytp-live-badge'
+    ],
+    channelinfo: [
+      'ytm-slim-owner-renderer yt-avatar-shape',
+      'ytm-slim-owner-renderer .slim-owner-channel-name',
+      'ytm-slim-owner-renderer .slim-owner-meta-item',
+      'button[aria-label="Go to channel"]',
+      'yt-reel-channel-bar-view-model yt-decorated-avatar-view-model',
+      'yt-reel-channel-bar-view-model a'
+    ],
+    videometadata: [
+      'ytm-slim-video-information-renderer span[dir="auto"]',
+      '.slim-video-information-views',
+      '.slim-video-information-date'
+    ],
+    hashtags: [
+      'a[href*="/hashtag/"]'
+    ],
+    searchbar: [
+      'button[aria-label="Search YouTube"]',
+      'yt-searchbox',
+      'ytm-searchbox',
+      'form[action="/results"]'
+    ],
+    askbutton: [
+      'button[aria-label="Ask"]',
+      'button[aria-label*="Ask" i]',
+      'ytm-button-renderer[aria-label*="Ask"]'
     ]
   };
 
